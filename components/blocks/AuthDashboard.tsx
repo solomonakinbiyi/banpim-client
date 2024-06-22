@@ -115,8 +115,10 @@ export function AuthDashboard({ page }: Props) {
         if (data.status === "success") {
           toast.success(data.message);
 
+          console.log(data)
+
           const userObject = {
-            email: data.data.user.email
+            email: data.data.email
           }
 
           setSession({
@@ -139,6 +141,7 @@ export function AuthDashboard({ page }: Props) {
         toast.error(data.message);
       }
     } catch (error) {
+      console.log(error)
       setLoading(false);
 
       toast.error("Something went wrong. Please try again");
