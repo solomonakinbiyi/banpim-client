@@ -32,7 +32,12 @@ const UserProvider = ({ children }: any) => {
 
   const router = useRouter();
 
-  const token = session && session.token ? session.token : "";
+  let userauth =
+    typeof window !== "undefined"
+      ? window.localStorage.getItem("userauth")
+      : null;
+
+  const token = userauth ? JSON.parse(userauth).token : null;
 
   axios.defaults.baseURL = process.env.NEXT_PUBLIC_API;
 
