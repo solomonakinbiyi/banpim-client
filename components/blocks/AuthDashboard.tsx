@@ -98,7 +98,7 @@ export function AuthDashboard({ page }: Props) {
       formData.append("password", password);
 
       const response = await axios.post(
-        `/api/user`,
+        `/api/register`,
         { email, password },
         {
           validateStatus: function (status) {
