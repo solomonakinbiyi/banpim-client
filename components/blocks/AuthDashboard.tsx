@@ -202,7 +202,7 @@ export function AuthDashboard({ page }: Props) {
               href={page === "signin" ? "/signup" : "/signin"}
               className="underline"
             >
-              {page === "signin" ? "Sign in" : "Sign up"}
+              {page === "signin" ? "Sign up" : "Sign in"}
             </Link>
           </div>
           <div className="mt-4 text-center text-sm">
