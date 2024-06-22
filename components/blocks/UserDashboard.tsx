@@ -62,7 +62,7 @@ export function UserDashboard({ children }: { children: React.ReactNode }) {
         if (data.status === "success") {
           toast.success(data.message);
 
-          window.localStorage.removeItem("adminauth");
+          window.localStorage.removeItem("userauth");
 
           setSession(null);
 
