@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -35,8 +37,51 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import axios from "axios";
+import { UserContext } from "@/context/app";
+import { useContext } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export function UserDashboard({ children }: { children: React.ReactNode }) {
+  const { setSession } = useContext(UserContext);
+
+  const router = useRouter();
+
+  const logout = async () => {
+    try {
+      const response = await axios.get(`/api/logout`, {
+        validateStatus: function (status: any) {
+          return status < 500; // Resolve only if the status code is less than 500
+        },
+      });
+
+      if (response.status < 400) {
+        const { data } = response;
+
+        if (data.status === "success") {
+          toast.success(data.message);
+
+          window.localStorage.removeItem("adminauth");
+
+          setSession(null);
+
+          router.push("/");
+        } else if (data.status === "error") {
+          toast.error(data.message);
+        }
+      } else {
+        // Handle other status codes (e.g., 400, 500)
+        // Access response data from error object
+        const { data } = response;
+
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error("Something went wrong. Please try again");
+    }
+  };
+
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
@@ -186,7 +231,7 @@ export function UserDashboard({ children }: { children: React.ReactNode }) {
               <DropdownMenuItem>Settings</DropdownMenuItem>
               <DropdownMenuItem>Support</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
+              <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </header>
