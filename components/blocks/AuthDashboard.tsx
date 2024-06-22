@@ -49,16 +49,15 @@ export function AuthDashboard({ page }: Props) {
 
       setLoading(false);
 
-      
       if (response.status < 400) {
         const { data } = response;
 
         if (data.status === "success") {
           toast.success(data.message);
-          
+
           const userObject = {
-            email: data.data.user.email
-          }
+            email: data.data.user.email,
+          };
 
           setSession({
             user: userObject,
@@ -115,21 +114,7 @@ export function AuthDashboard({ page }: Props) {
         if (data.status === "success") {
           toast.success(data.message);
 
-          console.log(data)
-
-          const userObject = {
-            email: data.data.email
-          }
-
-          setSession({
-            user: userObject,
-            token: data.data.token,
-          });
-
-          // save in localstorage
-          window.localStorage.setItem("userauth", JSON.stringify(data.data));
-
-          router.push("/dashboard");
+          router.push("/signin");
         } else if (data.status === "error") {
           toast.error(data.message);
         }
@@ -141,7 +126,7 @@ export function AuthDashboard({ page }: Props) {
         toast.error(data.message);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       setLoading(false);
 
       toast.error("Something went wrong. Please try again");
@@ -194,7 +179,11 @@ export function AuthDashboard({ page }: Props) {
               />
             </div>
             <Button type="submit" className="w-full">
-              {page === "signin" ? "Sign in" : "Register"}
+              {loading
+                ? "loading..."
+                : page === "signin"
+                ? "Sign in"
+                : "Register"}
             </Button>
           </form>
           <div className="mt-4 text-center text-sm">
