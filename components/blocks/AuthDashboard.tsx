@@ -49,37 +49,40 @@ export function AuthDashboard({ page }: Props) {
 
       setLoading(false);
 
+      
       if (response.status < 400) {
-        // Handle successful response
         const { data } = response;
-        if (data.message === "success") {
-          toast.success(data.description);
+
+        if (data.status === "success") {
+          toast.success(data.message);
+          
+          const userObject = {
+            email: data.data.user.email
+          }
 
           setSession({
-            user: data.data.user,
+            user: userObject,
             token: data.data.token,
           });
 
           // save in localstorage
           window.localStorage.setItem("userauth", JSON.stringify(data.data));
 
-          router.push("/");
-        } else if (data.message === "error") {
-          toast.error(data.description);
+          router.push("/dashboard");
+        } else if (data.status === "error") {
+          toast.error(data.message);
         }
       } else {
         // Handle other status codes (e.g., 400, 500)
         // Access response data from error object
         const { data } = response;
 
-        toast.error(data.description);
+        toast.error(data.message);
       }
     } catch (error) {
       setLoading(false);
 
       toast.error("Something went wrong. Please try again");
-
-      console.log("Something went wrong. Please try again ", error);
     }
   };
 
@@ -109,34 +112,36 @@ export function AuthDashboard({ page }: Props) {
       if (response.status < 400) {
         // Handle successful response
         const { data } = response;
-        if (data.message === "success") {
-          toast.success(data.description);
+        if (data.status === "success") {
+          toast.success(data.message);
+
+          const userObject = {
+            email: data.data.user.email
+          }
 
           setSession({
-            user: data.data.user,
+            user: userObject,
             token: data.data.token,
           });
 
           // save in localstorage
           window.localStorage.setItem("userauth", JSON.stringify(data.data));
 
-          router.push("/");
-        } else if (data.message === "error") {
-          toast.error(data.description);
+          router.push("/dashboard");
+        } else if (data.status === "error") {
+          toast.error(data.message);
         }
       } else {
         // Handle other status codes (e.g., 400, 500)
         // Access response data from error object
         const { data } = response;
 
-        toast.error(data.description);
+        toast.error(data.message);
       }
     } catch (error) {
       setLoading(false);
 
       toast.error("Something went wrong. Please try again");
-
-      console.log("Something went wrong. Please try again ", error);
     }
   };
 

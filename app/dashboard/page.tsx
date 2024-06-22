@@ -1,9 +1,8 @@
+"use client";
+
 import { UserDashboard } from "@/components/blocks/UserDashboard";
 import React from "react";
-import {
-  File,
-  ListFilter,
-} from "lucide-react";
+import { File, ListFilter } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -32,10 +31,22 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useRouter } from "next/navigation";
 
 type Props = {};
 
-const page = (props: Props) => {
+const Page = (props: Props) => {
+  const router = useRouter();
+
+  let userauth =
+    typeof window !== "undefined"
+      ? window.localStorage.getItem("userauth")
+      : null;
+
+  const token = userauth ? JSON.parse(userauth).token : null;
+
+  if (token === null) router.push("/signin");
+
   return (
     <UserDashboard>
       <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
@@ -295,4 +306,4 @@ const page = (props: Props) => {
   );
 };
 
-export default page;
+export default Page;
